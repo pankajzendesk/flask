@@ -1,0 +1,11 @@
+---
+- name: Create a user with a home directory
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Ensure user exists with specified password
+      user:
+        name: "{{ username }}"
+        password: "{{ password | password_hash('sha512') }}"
+        home: "/home/{{ username }}"
+        create_home: yes

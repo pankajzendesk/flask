@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, session, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
-import json, os, re
+import json, os, re, subprocess
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
@@ -16,6 +16,19 @@ def get_user_data():
 def save_user_data(data):
     with open("users.json", "w") as file:
         json.dump(data, file)
+
+def run_ansible_playbook(username, password):
+    try:
+        # Run the Ansible playbook with the necessary parameters
+        result = subprocess.run(
+            ['ansible-playbook', 'create_user.yml', '-e', f'username={username}', '-e', f'password={password}'],
+            check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print(result.stdout.decode())
+        print(result.stderr.decode())
+    except subprocess.CalledProcessError as e:
+        print(f"Ansible playbook failed: {e}")
+        return False
+    return True
 
 @app.route("/")
 def index():
@@ -48,7 +61,11 @@ def register():
         users.append({"username": username, "email": email, "password": hashed_password})
         save_user_data(users)
 
-        flash("User created successfully. Please log in.", "success")
+        if run_ansible_playbook(username, password):
+            flash("User created successfully. Please log in.", "success")
+        else:
+            flash("Failed to create system user. Please contact the administrator.", "error")
+            
         return redirect(url_for("login"))
 
     return render_template("register.html")
