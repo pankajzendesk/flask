@@ -19,8 +19,8 @@ This web application is designed for creating new users and setting passwords. I
 
 1. **Clone the Repository**:
     ```shell
-    git clone https://github.com/your-repo/flask-auth.git
-    cd flask-auth
+    git clone https://github.com/pankajzendesk/flask.git
+    cd flask
     ```
 
 2. **Install Dependencies**:
@@ -46,7 +46,7 @@ This web application is designed for creating new users and setting passwords. I
 If you create a user named `pankaj` with the password `pankaj`, you can log in to the web application with the same credentials. Simultaneously, in the background, the application will execute an Ansible playbook to create the `/home/pankaj` directory and set the specified password.
 
 ### Directory Structure
-flask_auth/
+flask/
 ├── app.py
 ├── users.json
 ├── requirements.txt
