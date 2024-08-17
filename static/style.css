@@ -1,0 +1,129 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@200;300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 0 10px;
+  background: url("/static/background.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.wrapper {
+  width: 1200px; /* Increase the width */
+  border-radius: 20px;
+  padding: 60px; 
+  text-align: center;
+  border: 4px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  font-size: 5rem; /* Increase font size */
+  margin-bottom: 50px;
+  color: #fff;
+}
+
+.input-field {
+  position: relative;
+  border-bottom: 3px solid #ccc;
+  margin: 50px 0; /* Increase margin */
+}
+
+.input-field label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 36px; /* Increase font size */
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+.input-field input {
+  width: 100%;
+  height: 75px; /* Increase height */
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 48px; /* Increase input font size */
+  color: #fff;
+  padding: 0 10px;
+}
+
+.input-field input::placeholder {
+  font-size: 36px; /* Increase placeholder font size */
+  color: #ccc; /* Adjust color for better visibility */
+}
+
+.input-field input:focus ~ label,
+.input-field input:valid ~ label {
+  font-size: 24px; /* Smaller font size for focused label */
+  top: 5px;
+  transform: translateY(-100%);
+}
+
+.wrapper a {
+  color: #efefef;
+  text-decoration: none;
+}
+
+.wrapper a:hover {
+  text-decoration: underline;
+}
+
+button {
+  background: #fff;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  padding: 20px 30px; /* Increase padding */
+  cursor: pointer;
+  border-radius: 10px; /* Increase border radius */
+  font-size: 36px; /* Increase font size */
+  border: 2px solid transparent;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  color: #fff;
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.register {
+  text-align: center;
+  margin-top: 40px;
+  color: #fff;
+  font-size: 36px; /* Increase font size for register */
+}
+
+/* Styles for flash messages */
+.alert-success {
+  font-size: 36px; /* Large font size for success message */
+  color: #28a745; /* Green color for the success message */
+  margin-bottom: 20px; /* Space between the message and form */
+}
+
+/* Styles for error messages */
+.error-message {
+  font-size: 36px; /* Large font size for error message */
+  color: #dc3545; /* Red color for the error message */
+  margin-bottom: 20px; /* Space between the message and form */
+}
