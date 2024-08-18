@@ -223,7 +223,6 @@
     }
   </style>
 </head>
-
 <body>
   <div class="container">
     <div class="welcome">Welcome, {{ username }}!</div>
@@ -239,9 +238,7 @@
         <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
       </div>
       <div class="content" id="content-area">
-        <!-- Content will be dynamically loaded here -->
         <p class="intro-text">Select an option from the left to get started.</p>
-        
         <div id="jupyter-content" class="form-container">
           <h2>Configure Jupyter Notebook</h2>
           <div class="input-group">
@@ -260,8 +257,6 @@
             <label for="memory">Memory (in GB)</label>
             <input type="number" id="memory" name="memory" required>
           </div>
-
-
           <div class="toggle-button">
             <label for="gpu">Enable GPU</label>
             <input type="checkbox" id="gpu" name="gpu">
@@ -273,13 +268,11 @@
 
         <div id="jupyter-history-content" class="form-container">
           <h2>Notebook History</h2>
-          <!-- Add your notebook history content here -->
           <p>No history available.</p>
         </div>
 
         <div id="pyspark-content" class="form-container">
           <h2>Starting PySpark session...</h2>
-          <!-- Add PySpark session content here -->
         </div>
       </div>
     </div>
@@ -308,14 +301,12 @@
 
     document.getElementById("create-jupyter").addEventListener("click", function (event) {
       event.preventDefault();
-      const cpu = document.getElementById("cpus").value;
+      const cpu = document.getElementById("cpu").value;
       const memory = document.getElementById("memory").value;
       const username = document.getElementById("username").value;
       const containerName = document.getElementById("container-name").value;
-      const gpu = document.getElementById("gpu").checked
+      const gpu = document.getElementById("gpu").checked;
 
-      // Add your logic here to handle the creation of the J
-      // Add your logic here to handle the creation of the Jupyter Notebook
       alert(`Creating Jupyter Notebook with the following configuration:
 CPU: ${cpu}
 Memory: ${memory} GB

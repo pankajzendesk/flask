@@ -18,21 +18,21 @@
     }
 
     .form-container {
-      background: rgba(255, 255, 255, 0.15); /* More transparent background */
+      background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(10px);
       text-align: center;
       padding: 30px 40px;
       border-radius: 10px;
       box-sizing: border-box;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 400px; /* Fixed width */
-      min-height: 550px; /* Minimum height to accommodate messages */
+      width: 400px;
+      min-height: 600px; /* Increased height to accommodate all elements */
     }
 
     .form-container h2 {
       font-size: 2rem;
       margin-bottom: 20px;
-      color: #fff; /* White text for better contrast */
+      color: #fff;
     }
 
     .form-container label {
@@ -40,21 +40,21 @@
       text-align: left;
       margin: 10px 0 5px;
       font-weight: bold;
-      color: #fff; /* White text for better contrast */
+      color: #fff;
     }
 
-    .form-container input {
+    .form-container input, .form-container select {
       width: 100%;
       padding: 10px;
       margin-bottom: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
-      background-color: rgba(255, 255, 255, 0.3); /* More transparent background */
-      color: #000; /* Black text for better readability */
+      background-color: rgba(255, 255, 255, 0.3);
+      color: #000;
     }
 
     .form-container input::placeholder {
-      color: #aaa; /* Placeholder color for better visibility */
+      color: #aaa;
     }
 
     .form-container button {
@@ -73,21 +73,21 @@
     }
 
     .error-message {
-      color: #dc3545; /* Red color */
-      font-size: 1rem; /* Smaller font size for error message */
+      color: #dc3545;
+      font-size: 1rem;
       margin-top: 10px;
-      min-height: 1rem; /* Adjust height to maintain form size */
+      min-height: 1rem;
     }
 
     .success-message {
-      color: #28a745; /* Green color for success messages */
-      font-size: 1rem; /* Smaller font size for success message */
+      color: #28a745;
+      font-size: 1rem;
       margin-top: 10px;
-      min-height: 1rem; /* Adjust height to maintain form size */
+      min-height: 1rem;
     }
 
     .username-error {
-      font-size: 1rem; /* Smaller font size for username format error */
+      font-size: 1rem;
     }
 
     .form-container .register {
@@ -96,7 +96,7 @@
 
     .form-container .register p {
       font-size: 1rem;
-      color: #fff; /* White text for better contrast */
+      color: #fff;
     }
 
     .form-container .register a {
@@ -131,6 +131,11 @@
       <input type="password" id="password" name="password" required>
       <label for="confirm_password">Confirm Password</label>
       <input type="password" id="confirm_password" name="confirm_password" required>
+      <label for="role">Role</label>
+      <select id="role" name="role">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
       <button type="submit">Register</button>
       <div class="register">
         <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
@@ -148,4 +153,5 @@
       return true;
     }
   </script>
-</body
+</body>
+</html>
