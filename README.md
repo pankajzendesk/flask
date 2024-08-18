@@ -9,6 +9,11 @@ This web application is designed for creating new users and setting passwords. I
 - **User Login**: Users can log in using the username and password.
 - **Welcome Page**: Users are welcomed with a personalized home page after login.
 
+#admin user
+this is deafult user
+user name: admin
+user-pass: Blue123#
+
 ### Prerequisites
 
 - **Python 3.x**: Ensure Python is installed on your system.
