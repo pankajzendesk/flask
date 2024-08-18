@@ -6,8 +6,7 @@
   <title>Home</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <style>
-    body,
-    html {
+    body, html {
       margin: 0;
       padding: 0;
       width: 100%;
@@ -48,19 +47,33 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      flex-shrink: 0;
+      align-items: center;
       box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
     }
 
     .sidebar a {
       text-decoration: none;
       color: white;
+      width: 100%;
+    }
+
+    .avatar {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .avatar img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid #007bff;
     }
 
     .action-button {
       display: block;
       padding: 10px;
-      font-size: 1rem; /* Adjusted font size */
+      width: 100%;
+      font-size: 1rem;
       background-color: #28a745;
       text-align: center;
       border-radius: 5px;
@@ -74,7 +87,8 @@
 
     .logout-button {
       margin-top: auto;
-      font-size: 1rem; /* Adjusted font size */
+      font-size: 1rem;
+      width: 100%;
       background-color: #dc3545;
       padding: 10px;
       text-align: center;
@@ -90,12 +104,15 @@
     .content {
       flex-grow: 1;
       padding: 20px;
-      background-color: white; /* Solid background color */
+      background-color: white;
       overflow-y: auto;
-      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
     }
 
-    .content>* {
+    .content > * {
       display: none;
     }
 
@@ -103,11 +120,11 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      width: 100%;
     }
 
     .content h2 {
-      display: none;
-      font-size: 1rem; /* Adjusted font size */
+      font-size: 1rem;
       color: #333;
     }
 
@@ -115,16 +132,94 @@
       display: block;
     }
 
-    .avatar {
-      text-align: center;
-      margin-bottom: 20px;
+    .form-container {
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 30px;
     }
 
-    .avatar img {
-      width: 100px;
-      height: 100px;
+    .input-field {
+      text-align: left;
+    }
+
+    .input-group {
+      margin-bottom: 10px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      color: black;
+    }
+
+    .toggle-button {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 0;
+    }
+
+    .toggle-button input[type="checkbox"] {
+      appearance: none;
+      width: 40px;
+      height: 20px;
+      background-color: #ccc;
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      outline: none;
+      transition: background-color 0.3s;
+    }
+
+    .toggle-button input[type="checkbox"]:checked {
+      background-color: #007bff;
+    }
+
+    .toggle-button input[type="checkbox"]::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
-      border: 2px solid #007bff;
+      background-color: white;
+      top: 1px;
+      left: 1px;
+      transition: transform 0.3s;
+    }
+
+    .toggle-button input[type="checkbox"]:checked::before {
+      transform: translateX(20px);
+    }
+
+    .create-button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: white;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 20px;
+    }
+
+    .create-button:hover {
+      background-color: #0056b3;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background-color: #ccc;
+      margin: 30px 0;
     }
   </style>
 </head>
@@ -138,45 +233,94 @@
           <img src="https://www.gravatar.com/avatar/?d=mp&s=100" alt="User Avatar">
         </div>
         <div class="button-group">
-          <a href="#" class="action-button" id="btn-jupyter-gpu">Jupyter with GPU</a>
-          <a href="#" class="action-button" id="btn-jupyter-no-gpu">Jupyter without GPU</a>
-          <a href="#" class="action-button" id="btn-pyspark">PySpark</a>
+          <a href="#" class="action-button" id="btn-jupyter">Run Jupyter</a>
+          <a href="#" class="action-button" id="btn-pyspark">Run PySpark</a>
         </div>
         <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
       </div>
       <div class="content" id="content-area">
         <!-- Content will be dynamically loaded here -->
         <p class="intro-text">Select an option from the left to get started.</p>
+        
+        <div id="jupyter-content" class="form-container">
+          <h2>Configure Jupyter Notebook</h2>
+          <div class="input-group">
+            <label for="cpu">CPU (in cores)</label>
+            <input type="number" id="cpu" name="cpu" required>
+          </div>
+          <div class="input-group">
+            <label for="memory">Memory (in GB)</label>
+            <input type="number" id="memory" name="memory" required>
+          </div>
+          <div class="input-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+          </div>
+          <div class="input-group">
+            <label for="container-name">Container Name</label>
+            <input type="text" id="container-name" name="container-name" required>
+          </div>
+          <div class="toggle-button">
+            <label for="gpu">Enable GPU</label>
+            <input type="checkbox" id="gpu" name="gpu">
+          </div>
+          <button class="create-button" id="create-jupyter">Create Jupyter Notebook</button>
+        </div>
 
-        <h2 id="jupyter-gpu">Starting Jupyter Notebook with GPU...</h2>
-        <h2 id="jupyter-no-gpu">Starting Jupyter Notebook without GPU...</h2>
-        <h2 id="pyspark">Starting PySpark session...</h2>
+        <div class="divider"></div>
+
+        <div id="jupyter-history-content" class="form-container">
+          <h2>Notebook History</h2>
+          <!-- Add your notebook history content here -->
+          <p>No history available.</p>
+        </div>
+
+        <div id="pyspark-content" class="form-container">
+          <h2>Starting PySpark session...</h2>
+          <!-- Add PySpark session content here -->
+        </div>
       </div>
     </div>
   </div>
+
   <script>
-    function showContent(contentId) {
+    function showContent(contentIds) {
       document.querySelectorAll('.content > *').forEach((element) => {
-        element.classList.remove('active');
+        element.style.display = 'none';
       });
-      document.getElementById(contentId).classList.add('active');
+
+      contentIds.forEach(id => {
+        document.getElementById(id).style.display = 'block';
+      });
     }
 
-    document.getElementById("btn-jupyter-gpu").addEventListener("click", function (event) {
+    document.getElementById("btn-jupyter").addEventListener("click", function (event) {
       event.preventDefault();
-      showContent("jupyter-gpu");
-    });
-
-    document.getElementById("btn-jupyter-no-gpu").addEventListener("click", function (event) {
-      event.preventDefault();
-      showContent("jupyter-no-gpu");
+      showContent(["jupyter-content", "jupyter-history-content"]);
     });
 
     document.getElementById("btn-pyspark").addEventListener("click", function (event) {
       event.preventDefault();
-      showContent("pyspark");
+      showContent(["pyspark-content"]);
+    });
+
+    document.getElementById("create-jupyter").addEventListener("click", function (event) {
+      event.preventDefault();
+      const cpu = document.getElementById("cpu").value;
+      const memory = document.getElementById("memory").value;
+      const username = document.getElementById("username").value;
+      const containerName = document.getElementById("container-name").value;
+      const gpu = document.getElementById("gpu").checked
+
+      // Add your logic here to handle the creation of the J
+      // Add your logic here to handle the creation of the Jupyter Notebook
+      alert(`Creating Jupyter Notebook with the following configuration:
+CPU: ${cpu}
+Memory: ${memory} GB
+Username: ${username}
+Container Name: ${containerName}
+GPU: ${gpu ? 'Enabled' : 'Disabled'}`);
     });
   </script>
 </body>
-
 </html>
