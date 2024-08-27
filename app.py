@@ -40,15 +40,16 @@ def save_user_data(data):
 
 def run_ansible_playbook(username, password):
     try:
-        # Run the Ansible playbook with the necessary parameters
+        # SSH into host and run the ansible-playbook command
         result = subprocess.run(
-            ['ansible-playbook', 'playbooks/create_user.yml', '-e', 'username={}'.format(username), '-e', 'password={}'.format(password)],
+            ['ssh', '-i', '/root/.ssh/id_rsa', 'ubuntu-20',
+             'ansible-playbook', '/home/pankaj/projects/flask/playbooks/user_create.yml', '-i', 'localhost,', '-e', f'username={username}', '-e', f'password={password}'],
             check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         logging.info(result.stdout.decode())
         logging.error(result.stderr.decode())
         return True
     except subprocess.CalledProcessError as e:
-        error_msg = "Ansible playbook failed: {}\nOutput: {}".format(e, e.stderr.decode())
+        error_msg = f"Ansible playbook failed: {e}\nOutput: {e.stderr.decode()}"
         logging.error(error_msg)
         return False
 
@@ -75,20 +76,21 @@ def register():
         if not re.match("^[a-z0-9]+$", username):
             return render_template("register.html", message="Username can only contain lowercase letters and digits.")
 
-        hashed_password = generate_password_hash(password)
         users = get_user_data()
 
-        if any(user['username'] == username or user['email'] == email for user in users):
+        if any(user['username'] == username for user in users) or any(user['email'] == email for user in users):
             return render_template("register.html", message="Username or email already exists.")
 
+        # Run Ansible playbook to create the Linux user
+        if not run_ansible_playbook(username, password):
+            return render_template("register.html", message="Failed to create system user. Please contact the administrator.")
+
+        # If the Ansible user creation is successful, save the web user data
+        hashed_password = generate_password_hash(password)
         users.append({"username": username, "email": email, "password": hashed_password, "role": role})
         save_user_data(users)
 
-        if run_ansible_playbook(username, password):
-            flash("User created successfully. Please log in.", "success")
-        else:
-            flash("Failed to create system user. Please contact the administrator.", "error")
-
+        flash("User created successfully. Please log in.", "success")
         return redirect(url_for("login"))
 
     return render_template("register.html")
@@ -140,4 +142,4 @@ def home():
         return redirect(url_for("login"))
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5001)  # Port set to 5001
+    app.run(debug=True, host='0.0.0.0', port=5000)  # Port set to 5000
