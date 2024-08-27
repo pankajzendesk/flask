@@ -42,8 +42,8 @@ def run_ansible_playbook(username, password):
     try:
         # SSH into host and run the ansible-playbook command
         result = subprocess.run(
-            ['ssh', '-i', '/root/.ssh/id_rsa', 'ubuntu-20',
-             'ansible-playbook', '/home/pankaj/projects/flask/playbooks/user_create.yml', '-i', 'localhost,', '-e', f'username={username}', '-e', f'password={password}'],
+            ['ssh', '-i', '/root/.ssh/id_rsa', 'root@192.168.153.1',
+             'ansible-playbook', '/home/pankaj/projects/flask/playbooks/create_user.yml', '-i', 'localhost,', '-e', f'username={username}', '-e', f'password={password}'],
             check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         logging.info(result.stdout.decode())
         logging.error(result.stderr.decode())
