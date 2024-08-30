@@ -14,6 +14,9 @@ this is deafult user
 user name: admin
 user-pass: Blue123#
 
+#defualt user
+pankaj
+pankaj
 ### Prerequisites
 
 - **Python 3.x**: Ensure Python is installed on your system.
