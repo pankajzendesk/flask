@@ -1,0 +1,41 @@
+body {
+    font-family: "Courier New", Courier, monospace;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    padding: 20px;
+}
+.terminal-container {
+    width: 100%;
+    height: 100%;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.input-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* Align items to the center to match prompt and input height */
+}
+.input-container input {
+    flex-grow: 1;
+    padding: 0 1px; /* Add 1px padding to the right */
+    margin: 0; /* Remove margin */
+    font-size: 14px;
+    font-family: "Courier New", Courier, monospace;
+    background-color: #1e1e1e;
+    color: #00ff00; /* Green input text */
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    line-height: 1.5; /* Match line height with the surrounding text */
+}
+.terminal-prompt {
+    display: inline;
+    color: #ff00ff; /* Pink prompt text */
+}
+.output-text {
+    color: #ffffff; /* White output text */
+}
