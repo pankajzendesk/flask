@@ -195,7 +195,7 @@ def run_script():
         if gpu == 'yes':
             ssh_command = f'ssh -i {ssh_key_path_gpu} root@{ssh_host_gpu} sh {script_path_gpu} {username} {container_name} {cpu} {memory} {gpu}'
         else:
-            ssh_command = f'ssh -i {ssh_key_path} root@{ssh_host} sh {script_path_no_gpu} {username} {container_name} {cpu} {memory}'
+            ssh_command = f'ssh -i {ssh_key_path} root@{ssh_host} sh {script_path_no_gpu} {username} {container_name} {cpu} {memory} {gpu}'
         
         result = subprocess.run(
             ssh_command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, text=True
