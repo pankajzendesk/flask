@@ -15,14 +15,12 @@
       font-family: Arial, Helvetica, sans-serif;
       background-color: #f8f9fa;
     }
-
     .container {
       display: flex;
       flex-direction: column;
       width: 100%;
       height: 100%;
     }
-
     .welcome {
       background-color: #007bff;
       color: white;
@@ -33,13 +31,11 @@
       flex-shrink: 0;
       border-bottom: 3px solid #0056b3;
     }
-
     .main-content {
       display: flex;
       flex-grow: 1;
       overflow: hidden;
     }
-
     .sidebar {
       width: 300px;
       height: 100%;
@@ -51,25 +47,21 @@
       align-items: center;
       box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
     }
-
     .sidebar a {
       text-decoration: none;
       color: white;
       width: 100%;
     }
-
     .avatar {
       text-align: center;
       margin-bottom: 20px;
     }
-
     .avatar img {
       width: 100px;
       height: 100px;
       border-radius: 50%;
       border: 2px solid #007bff;
     }
-
     .action-button {
       display: block;
       padding: 10px;
@@ -80,12 +72,10 @@
       border-radius: 5px;
       transition: background-color 0.3s, transform 0.3s;
     }
-
     .action-button:hover {
       background-color: #218838;
       transform: translateY(-2px);
     }
-
     .logout-button {
       margin-top: auto;
       font-size: 1rem;
@@ -96,15 +86,12 @@
       border-radius: 5px;
       transition: background-color 0.3s, transform 0.3s;
     }
-
     .logout-button:hover {
       background-color: #c82333;
       transform: translateY(-2px);
     }
-
     .content {
       flex-grow: 1;
-      /* padding: 20px; */
       background-color: white;
       overflow-y: auto;
       display: flex;
@@ -112,48 +99,39 @@
       justify-content: flex-start;
       align-items: center;
     }
-
     .content > * {
       display: none;
     }
-
     .button-group {
       display: flex;
       flex-direction: column;
       gap: 10px;
       width: 100%;
     }
-
     .content h2 {
       font-size: 1rem;
       color: #333;
     }
-
     .content h2.active {
       display: block;
     }
-
     .form-container {
       width: 100%;
       max-width: 400px;
       margin-bottom: 30px;
       margin-top: 10px;
     }
-
     .input-field {
       text-align: left;
     }
-
     .input-group {
       margin-bottom: 10px;
     }
-
     .input-group label {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
     }
-
     .input-group input, .input-group select {
       width: 100%;
       padding: 10px;
@@ -161,14 +139,12 @@
       border-radius: 5px;
       color: black;
     }
-
     .toggle-button {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin: 15px 0;
     }
-
     .toggle-button input[type="checkbox"] {
       appearance: none;
       width: 40px;
@@ -180,11 +156,9 @@
       outline: none;
       transition: background-color 0.3s;
     }
-
     .toggle-button input[type="checkbox"]:checked {
       background-color: #007bff;
     }
-
     .toggle-button input[type="checkbox"]::before {
       content: "";
       position: absolute;
@@ -196,11 +170,9 @@
       left: 1px;
       transition: transform 0.3s;
     }
-
     .toggle-button input[type="checkbox"]:checked::before {
       transform: translateX(20px);
     }
-
     .create-button {
       padding: 10px 20px;
       font-size: 1rem;
@@ -212,33 +184,39 @@
       transition: background-color 0.3s;
       margin-top: 20px;
     }
-
     .create-button:hover {
       background-color: #0056b3;
     }
-
     .divider {
       width: 100%;
       height: 1px;
       background-color: #ccc;
       margin: 30px 0;
     }
-
-    .input-group label{
+    .input-group label {
       color:black;
     }
-
-    .toggle-button label{
+    .toggle-button label {
       color:black;
       font-weight: bold;
     }
-  
-    #juypyter-1{
+    #juypyter-1 {
       font-size: large;
       font-weight: bold;
       color:#007bff;
       display: block;
       margin-top: 10px;
+    }
+    #script-output {
+      padding: 10px;
+      background-color: #f1f1f1;
+      border: 1px solid #ccc;
+      margin-top: 20px;
+      border-radius: 5px;
+      font-size: 1.1em;
+      color: #333;
+      display: none;
+      white-space: pre-wrap; /* To preserve whitespace and line breaks */
     }
   </style>
 </head>
@@ -258,8 +236,8 @@
       </div>
       <div class="content" id="content-area">
         <p class="intro-text">Select an option from the left to get started.</p>
-        <div id="jupyter-content" class="form-container" >
-          <h2 class="jupyter-1" id="juypyter-1">Configure Jupyter Notebook</h2>
+        <div id="jupyter-content" class="form-container">
+          <h2 id="juypyter-1">Configure Jupyter Notebook</h2>
           <div class="input-group">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
@@ -286,28 +264,23 @@
         <div class="divider"></div>
 
         <div id="jupyter-history-content" class="form-container">
-          
           <h2>Notebook History</h2>
-          <p style="color:black">No history available.</p>
+          <p>No history available.</p>
         </div>
-  <hr>
-       
+
         <div id="pyspark-content" class="" style="width: 100%; height: 100%;">
-          <!-- <h2>Starting PySpark session...</h2> -->
           <div class="terminal-container" id="terminal-output">
             <!-- This is where commands and outputs will be added -->
-        </div>
-        <div class="input-container" id="input-container">
+          </div>
+          <div class="input-container" id="input-container">
             <span class="terminal-prompt">terminal:$ </span>
             <input type="text" id="command-input" autofocus autocomplete="off">
+          </div>
         </div>
-        </div>
+        <div id="script-output" style="display: none;"></div>
       </div>
-
-      
     </div>
   </div>
-
 
 <script>
   function showContent(contentIds) {
@@ -332,62 +305,93 @@
 
   document.getElementById("create-jupyter").addEventListener("click", function (event) {
     event.preventDefault();
+
+    // Get input values
     const cpu = document.getElementById("cpu").value;
     const memory = document.getElementById("memory").value;
     const username = document.getElementById("username").value;
     const containerName = document.getElementById("container-name").value;
     const gpu = document.getElementById("gpu").checked;
 
-    alert(`Creating Jupyter Notebook with the following configuration:
-CPU: ${cpu}
-Memory: ${memory} GB
-Username: ${username}
-Container Name: ${containerName}
-GPU: ${gpu ? 'Enabled' : 'Disabled'}`);
-  });
+    if (!cpu || !memory || !username || !containerName) {
+        alert("All fields are required.");
+        return;
+    }
+
+    // Make the fetch request
+    fetch('/run_script', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            cpu: cpu,
+            memory: memory,
+            username: username,
+            container_name: containerName,
+            gpu: gpu
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Script output:', data);  // Debug log
+
+        // Display the output in the script-output div
+        const scriptOutput = document.getElementById('script-output');
+        if (scriptOutput) {
+            scriptOutput.style.display = 'block';
+            scriptOutput.textContent = data.output || data.error;
+        } else {
+            console.error('Element with ID "script-output" not found.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);  // Debug log
+    });
+});
 
 
   const terminalOutput = document.getElementById('terminal-output');
-    const commandInput = document.getElementById('command-input');
-    const inputContainer = document.getElementById('input-container');
-    document.getElementById('command-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            const command = e.target.value;
-            e.target.value = '';
-            // Move the input field below the last output
-            const commandOutput = document.createElement('div');
-            commandOutput.innerHTML = `<p class="output-text"><span class="terminal-prompt">terminal:$ </span><span style="color: #00ff00;">${command}</span></p>`;
-            terminalOutput.appendChild(commandOutput);
-            // Send command to the server and display the result
-            fetch('/execute', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `command=${encodeURIComponent(command)}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                const outputLines = data.output.split('\n');
-                outputLines.forEach(line => {
-                    const outputElement = document.createElement('p');
-                    outputElement.className = 'output-text';
-                    outputElement.textContent = line;
-                    terminalOutput.appendChild(outputElement);
-                });
-                // After the output, move the input container to the end
-                terminalOutput.appendChild(inputContainer);
-                // Scroll to the bottom of the terminal container
-                terminalOutput.scrollTop = terminalOutput.scrollHeight;
-                // Focus the input for the next command
-                commandInput.focus();
-            });
-        }
-    });
-    // Initially, move the input container to the start of the terminal
-    terminalOutput.prepend(inputContainer);
-</script>
-
+  const commandInput = document.getElementById('command-input');
+  const inputContainer = document.getElementById('input-container');
   
+  document.getElementById('command-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      const command = e.target.value;
+      e.target.value = '';
+      // Move the input field below the last output
+      const commandOutput = document.createElement('div');
+      commandOutput.innerHTML = `<p class="output-text"><span class="terminal-prompt">terminal:$ </span><span style="color: #00ff00;">${command}</span></p>`;
+      terminalOutput.appendChild(commandOutput);
+      // Send command to the server and display the result
+      fetch('/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `command=${encodeURIComponent(command)}`
+      })
+      .then(response => response.json())
+      .then(data => {
+        const outputLines = data.output.split('\n');
+        outputLines.forEach(line => {
+          const outputElement = document.createElement('p');
+          outputElement.className = 'output-text';
+          outputElement.textContent = line;
+          terminalOutput.appendChild(outputElement);
+        });
+        // After the output, move the input container to the end
+        terminalOutput.appendChild(inputContainer);
+        // Scroll to the bottom of the terminal container
+        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        // Focus the input for the next command
+        commandInput.focus();
+      });
+    }
+  });
+  
+  // Initially, move the input container to the start of the terminal
+  terminalOutput.prepend(inputContainer);
+</script>
 </body>
 </html>
