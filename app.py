@@ -44,13 +44,19 @@ def run_ansible_playbook(username, password):
     playbook_path = os.getenv("PLAYBOOK_PATH")
     
     if not all([ambari_host, ssh_key_path, playbook_path]):
-        logging.error("Please set all required environment variables: SSH_HOST, SSH_KEY_PATH, PLAYBOOK_PATH")
+        logging.error("Please set all required environment variables: AMBARI_HOST, SSH_KEY_PATH, PLAYBOOK_PATH")
         return False
+    
+    ssh_command = [
+        'ssh', '-i', ssh_key_path, f'root@{ambari_host}',
+        'ansible-playbook', playbook_path, '-i', '/etc/ansible/hosts', '-e', f'username={username}', '-e', f'password={password}'
+    ]
+    
+    logging.info(f"Running command: {' '.join(ssh_command)}")
     
     try:
         result = subprocess.run(
-            ['ssh', '-i', ssh_key_path, f'root@{ambari_host}',
-             'ansible-playbook', playbook_path, '-i', 'localhost,', '-e', f'username={username}', '-e', f'password={password}'],
+            ssh_command,
             check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
         logging.info(f"Ansible Playbook Output: {result.stdout.decode()}")
