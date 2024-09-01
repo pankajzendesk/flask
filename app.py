@@ -43,27 +43,32 @@ def run_ansible_playbook(username, password):
     ssh_key_path = os.getenv("SSH_KEY_PATH")
     playbook_path = os.getenv("PLAYBOOK_PATH")
     
+    # Check that all required environment variables are set
     if not all([ambari_host, ssh_key_path, playbook_path]):
         logging.error("Please set all required environment variables: AMBARI_HOST, SSH_KEY_PATH, PLAYBOOK_PATH")
         return False
     
-    ssh_command = [
-        'ssh', '-i', ssh_key_path, f'root@{ambari_host}',
-        'ansible-playbook', playbook_path, '-i', '/etc/ansible/hosts', '-e', f'username={username}', '-e', f'password={password}'
-    ]
-    
-    logging.info(f"Running command: {' '.join(ssh_command)}")
+    # Construct the SSH command
+    ssh_command = (
+        f"ssh -i {ssh_key_path} root@{ambari_host} " +
+        f"'ansible-playbook {playbook_path} -i /etc/ansible/hosts -e username={username} -e password={password} -vvvv'"
+    )
+
+    logging.info(f"Running command: {ssh_command}")
     
     try:
+        # Run the SSH command
         result = subprocess.run(
             ssh_command,
-            check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
+        # Log the output and errors
         logging.info(f"Ansible Playbook Output: {result.stdout.decode()}")
         if result.stderr.decode():
             logging.error(f"Ansible Playbook Errors: {result.stderr.decode()}")
         return True
     except subprocess.CalledProcessError as e:
+        # Log the error
         error_msg = f"Ansible playbook failed: {e}\nOutput: {e.stderr.decode()}"
         logging.error(error_msg)
         return False
