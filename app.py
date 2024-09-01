@@ -52,7 +52,7 @@ def run_ansible_playbook(username, password):
     # Construct the SSH command with increased verbosity
     ssh_command = (
         f"ssh -i {ssh_key_path} root@{ambari_host} "
-        f"'ansible-playbook {playbook_path} -i /etc/ansible/hosts -e username={username} -e password={password} -vvvv'"
+        f"'ansible-playbook {playbook_path} -i /etc/ansible/flaskhost -e username={username} -e password={password} -vvvv'"
     )
 
     logging.info(f"Running command: {ssh_command}")
