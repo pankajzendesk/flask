@@ -39,17 +39,17 @@ def save_user_data(data):
         json.dump(data, file)
 
 def run_ansible_playbook(username, password):
-    ssh_host = os.getenv("SSH_HOST")
+    ambari_host = os.getenv("AMBARI_HOST")
     ssh_key_path = os.getenv("SSH_KEY_PATH")
     playbook_path = os.getenv("PLAYBOOK_PATH")
     
-    if not all([ssh_host, ssh_key_path, playbook_path]):
+    if not all([ambari_host, ssh_key_path, playbook_path]):
         logging.error("Please set all required environment variables: SSH_HOST, SSH_KEY_PATH, PLAYBOOK_PATH")
         return False
     
     try:
         result = subprocess.run(
-            ['ssh', '-i', ssh_key_path, f'root@{ssh_host}',
+            ['ssh', '-i', ssh_key_path, f'root@{ambari_host}',
              'ansible-playbook', playbook_path, '-i', 'localhost,', '-e', f'username={username}', '-e', f'password={password}'],
             check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
