@@ -39,39 +39,62 @@ def save_user_data(data):
         json.dump(data, file)
 
 def run_ansible_playbook(username, password):
+    # Retrieve environment variables
     ambari_host = os.getenv("AMBARI_HOST")
     ssh_key_path = os.getenv("SSH_KEY_PATH")
     playbook_path = os.getenv("PLAYBOOK_PATH")
-    
-    # Check that all required environment variables are set
+
+    # Check if all required environment variables are set
     if not all([ambari_host, ssh_key_path, playbook_path]):
         logging.error("Please set all required environment variables: AMBARI_HOST, SSH_KEY_PATH, PLAYBOOK_PATH")
         return False
-    
-    # Construct the SSH command
+
+    # Construct the SSH command with increased verbosity
     ssh_command = (
-        f"ssh -i {ssh_key_path} root@{ambari_host} " +
+        f"ssh -i {ssh_key_path} root@{ambari_host} "
         f"'ansible-playbook {playbook_path} -i /etc/ansible/hosts -e username={username} -e password={password} -vvvv'"
     )
 
     logging.info(f"Running command: {ssh_command}")
-    
+
     try:
         # Run the SSH command
         result = subprocess.run(
             ssh_command,
             shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
+
         # Log the output and errors
-        logging.info(f"Ansible Playbook Output: {result.stdout.decode()}")
-        if result.stderr.decode():
-            logging.error(f"Ansible Playbook Errors: {result.stderr.decode()}")
+        if result.stdout:
+            logging.info("Ansible Playbook Output:\n" + result.stdout.decode())
+        if result.stderr:
+            logging.error("Ansible Playbook Errors:\n" + result.stderr.decode())
+            parse_ansible_errors(result.stderr.decode())
+
         return True
+
     except subprocess.CalledProcessError as e:
-        # Log the error
-        error_msg = f"Ansible playbook failed: {e}\nOutput: {e.stderr.decode()}"
+        # Log the error and parse it
+        error_msg = f"Ansible playbook failed: {e}\nOutput:\n" + e.stderr.decode()
         logging.error(error_msg)
+        parse_ansible_errors(e.stderr.decode())
+
         return False
+
+def parse_ansible_errors(stderr):
+    if "Invalid characters were found in group names" in stderr:
+        logging.error("Invalid characters found in group names in the inventory file. Please check the inventory file.")
+    elif "Authentication failure" in stderr:
+        logging.error("Authentication failure. Please check the SSH key and host access permissions.")
+    elif "command not found" in stderr:
+        logging.error("Ansible command not found. Make sure Ansible is installed on the remote host.")
+    elif "FAILED!" in stderr:
+        logging.error("Ansible Playbook encountered an error!")
+    else:
+        logging.error("An unspecified error occurred.")
+
+# Ensure logging is configured
+logging.basicConfig(level=logging.INFO)
 
 
 @app.route("/")
