@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>hello World</h1>
+</body>
+<script>
+    function showContent(contentIds) {
+      document.querySelectorAll('.content > *').forEach((element) => {
+        element.style.display = 'none';
+      });
+
+      contentIds.forEach(id => {
+        document.getElementById(id).style.display = 'block';
+      });
+    }
+
+    document.getElementById("btn-jupyter").addEventListener("click", function (event) {
+      event.preventDefault();
+      showContent(["jupyter-content", "jupyter-history-content"]);
+    });
+
+    document.getElementById("btn-pyspark").addEventListener("click", function (event) {
+      event.preventDefault();
+      showContent(["pyspark-content"]);
+    });
+
+    document.getElementById("create-jupyter").addEventListener("click", function (event) {
+      event.preventDefault();
+      const cpu = document.getElementById("cpu").value;
+      const memory = document.getElementById("memory").value;
+      const username = document.getElementById("username").value;
+      const containerName = document.getElementById("container-name").value;
+      const gpu = document.getElementById("gpu").checked;
+
+      alert(`Creating Jupyter Notebook with the following configuration:
+CPU: ${cpu}
+Memory: ${memory} GB
+Username: ${username}
+Container Name: ${containerName}
+GPU: ${gpu ? 'Enabled' : 'Disabled'}`);
+    });
+  </script>
+</html>
