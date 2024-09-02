@@ -76,3 +76,10 @@ flask/
    ```shell
    sudo apt-get update
    sudo apt-get install ansible
+
+
+#How to use this
+Go to directory where Dockerfile present
+1. Create docker images
+docker build -t flask:v1 .
+2. docker run -it -p 5000:5000 -e SSH_HOST={HOST IP} -e SSH_KEY_PATH={inside ssh path} -e SSH_HOST_GPU={} -e SSH_KEY_PATH_GPU={} SCRIPT_PATH_GPU={} SCRIPT_PATH_NO_GPU flask:v1
