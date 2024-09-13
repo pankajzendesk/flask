@@ -51,7 +51,7 @@ def run_ansible_playbook(username, password):
 
     # Construct the SSH command with increased verbosity
     ssh_command = (
-        f"ssh -i {ssh_key_path} root@{ambari_host} "
+        f"ssh -o StrictHostKeyChecking=no -i {ssh_key_path} root@{ambari_host} "
         f"'ansible-playbook {playbook_path} -i /etc/ansible/flaskhost -e username={username} -e password={password} -vvvv'"
     )
 
@@ -198,7 +198,7 @@ def execute():
     ssh_key_path = os.getenv("SSH_KEY_PATH")
     command = request.form['command']
     try:
-        ssh_command = f'ssh -i {ssh_key_path} root@{ssh_host} {command}'
+        ssh_command = f'ssh -o StrictHostKeyChecking=no -i {ssh_key_path} root@{ssh_host} {command}'
         output = subprocess.check_output(ssh_command, shell=True, stderr=subprocess.STDOUT, text=True)
     except subprocess.CalledProcessError as e:
         output = e.output
@@ -227,9 +227,9 @@ def run_script():
 
     try:
         if gpu == 'yes':
-            ssh_command = f'ssh -i {ssh_key_path_gpu} root@{ssh_host_gpu} sh {script_path_gpu} {username} {container_name} {cpu} {memory} {gpu}'
+            ssh_command = f'ssh -o StrictHostKeyChecking=no -i {ssh_key_path_gpu} root@{ssh_host_gpu} sh {script_path_gpu} {username} {container_name} {cpu} {memory} {gpu}'
         else:
-            ssh_command = f'ssh -i {ssh_key_path} root@{ssh_host} sh {script_path_no_gpu} {username} {container_name} {cpu} {memory} {gpu}'
+            ssh_command = f'ssh -o StrictHostKeyChecking=no -i {ssh_key_path} root@{ssh_host} sh {script_path_no_gpu} {username} {container_name} {cpu} {memory} {gpu}'
         
         result = subprocess.run(
             ssh_command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, text=True
