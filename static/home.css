@@ -1,41 +1,247 @@
-body {
-    font-family: "Courier New", Courier, monospace;
-    background-color: #1e1e1e;
-    color: #ffffff;
-    padding: 20px;
-}
-.terminal-container {
+body, html {
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
-    background-color: #1e1e1e;
-    color: #ffffff;
-    padding: 10px;
-    overflow-y: auto;
-    font-size: 14px;
-    line-height: 1.5;
-}
-.input-container {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f8f9fa;
+  }
+  
+  .container {
     display: flex;
-    flex-direction: row;
-    align-items: center; /* Align items to the center to match prompt and input height */
-}
-.input-container input {
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .welcome {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 2rem;
+    font-weight: bold;
+    flex-shrink: 0;
+    border-bottom: 3px solid #0056b3;
+  }
+  
+  .main-content {
+    display: flex;
     flex-grow: 1;
-    padding: 0 1px; /* Add 1px padding to the right */
-    margin: 0; /* Remove margin */
-    font-size: 14px;
-    font-family: "Courier New", Courier, monospace;
-    background-color: #1e1e1e;
-    color: #00ff00; /* Green input text */
-    border: none;
+    overflow: hidden;
+  }
+  
+  .sidebar {
+    width: 300px;
+    height: 100%;
+    background-color: #343a40;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar a {
+    text-decoration: none;
+    color: white;
+    width: 100%;
+  }
+  
+  .avatar {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .avatar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid #007bff;
+  }
+  
+  .action-button {
+    display: block;
+    padding: 10px;
+    width: 100%;
+    font-size: 1rem;
+    background-color: #28a745;
+    text-align: center;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .action-button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+  }
+  
+  .logout-button {
+    margin-top: auto;
+    font-size: 1rem;
+    width: 100%;
+    background-color: #dc3545;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .logout-button:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+  }
+  
+  .content {
+    flex-grow: 1;
+    background-color: white;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .content > * {
+    display: none;
+  }
+  
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .content h2 {
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .content h2.active {
+    display: block;
+  }
+  
+  .form-container {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 30px;
+    margin-top: 10px;
+  }
+  
+  .input-field {
+    text-align: left;
+  }
+  
+  .input-group {
+    margin-bottom: 10px;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .input-group input, .input-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: black;
+  }
+  
+  .toggle-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+  }
+  
+  .toggle-button input[type="checkbox"] {
+    appearance: none;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
     outline: none;
-    box-sizing: border-box;
-    line-height: 1.5; /* Match line height with the surrounding text */
-}
-.terminal-prompt {
-    display: inline;
-    color: #ff00ff; /* Pink prompt text */
-}
-.output-text {
-    color: #ffffff; /* White output text */
-}
+    transition: background-color 0.3s;
+  }
+  
+  .toggle-button input[type="checkbox"]:checked {
+    background-color: #007bff;
+  }
+  
+  .toggle-button input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: white;
+    top: 1px;
+    left: 1px;
+    transition: transform 0.3s;
+  }
+  
+  .toggle-button input[type="checkbox"]:checked::before {
+    transform: translateX(20px);
+  }
+  
+  .create-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+  }
+  
+  .create-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .divider {
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    margin: 30px 0;
+  }
+  
+  .input-group label {
+    color:black;
+  }
+  
+  .toggle-button label {
+    color:black;
+    font-weight: bold;
+  }
+  
+  #juypyter-1 {
+    font-size: large;
+    font-weight: bold;
+    color:#007bff;
+    display: block;
+    margin-top: 10px;
+  }
+  
+  #script-output {
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    color: green;
+    display: none;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  %    

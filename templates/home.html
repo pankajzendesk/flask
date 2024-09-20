@@ -208,16 +208,18 @@
       margin-top: 10px;
     }
     #script-output {
-      padding: 10px;
-      background-color: #f1f1f1;
-      border: 1px solid #ccc;
-      margin-top: 20px;
-      border-radius: 5px;
-      font-size: 1.1em;
-      color: #333;
-      display: none;
-      white-space: pre-wrap; /* To preserve whitespace and line breaks */
-    }
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 1.2em; /* Increase font size */
+    color: green; /* Green text for the output */
+    display: none; /* Initially hidden */
+    white-space: pre-wrap; /* Preserve whitespace and line breaks */
+    max-height: 300px; /* Set a max height */
+    overflow-y: auto; /* Add vertical scroll if needed */
+}
   </style>
 </head>
 <body>
@@ -236,6 +238,8 @@
       </div>
       <div class="content" id="content-area">
         <p class="intro-text">Select an option from the left to get started.</p>
+
+        <!-- Jupyter Content -->
         <div id="jupyter-content" class="form-container">
           <h2 id="juypyter-1">Configure Jupyter Notebook</h2>
           <div class="input-group">
@@ -259,6 +263,9 @@
             <input type="checkbox" id="gpu" name="gpu" style="vertical-align: middle;"></span>
           </div>
           <button class="create-button" id="create-jupyter">Create Jupyter Notebook</button>
+          
+          <!-- Output area (initially hidden) -->
+          <div id="script-output"></div>
         </div>
 
         <div class="divider"></div>
@@ -277,7 +284,6 @@
             <input type="text" id="command-input" autofocus autocomplete="off">
           </div>
         </div>
-        <div id="script-output" style="display: none;"></div>
       </div>
     </div>
   </div>
@@ -332,23 +338,36 @@
             gpu: gpu
         })
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Script output:', data);  // Debug log
-
-        // Display the output in the script-output div
+    .then(response => {
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
         const scriptOutput = document.getElementById('script-output');
-        if (scriptOutput) {
-            scriptOutput.style.display = 'block';
-            scriptOutput.textContent = data.output || data.error;
-        } else {
-            console.error('Element with ID "script-output" not found.');
+        scriptOutput.style.display = 'block';
+        scriptOutput.textContent = '';  // Clear previous output
+
+        function readChunk() {
+            reader.read().then(({ done, value }) => {
+                if (done) {
+                    console.log("Stream complete");
+                    return;
+                }
+                // Decode the chunk and append it to the script output
+                const chunk = decoder.decode(value, { stream: true });
+                scriptOutput.textContent += chunk;
+
+                // Scroll to the bottom of the output as new content is added
+                scriptOutput.scrollTop = scriptOutput.scrollHeight;
+
+                readChunk();  // Keep reading the stream
+            });
         }
+
+        readChunk();  // Start reading the output stream
     })
     .catch(error => {
         console.error('Error:', error);  // Debug log
     });
-});
+  });
 
 
   const terminalOutput = document.getElementById('terminal-output');
